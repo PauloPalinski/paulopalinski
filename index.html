@@ -1,0 +1,515 @@
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
+<title>Automated Dollar System</title>
+<meta content="#f4f6fa" name="theme-color"/>
+<style>
+:root{--green:#17a34a;--green2:#11823a;--ink:#111827;--muted:#667085;--line:#e5e7eb;--page:#f4f6fa;--card:#fff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--page)}
+button{font:inherit}.app{min-height:100svh;display:flex;flex-direction:column}.stage{width:100%;max-width:448px;margin:0 auto;padding:18px 18px 28px}.top{width:100%;height:8px;background:rgba(23,163,74,.12);position:relative;border-radius:999px;overflow:hidden;margin:0 0 28px}.bar{height:100%;width:0;background:var(--green);transition:width .7s ease;border-radius:999px}.step{display:none;animation:enter .32s ease}.step.active{display:flex;flex-direction:column;justify-content:center;min-height:calc(100svh - 92px)}@keyframes enter{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+h1,h2{margin:0;text-align:center;line-height:1.16;letter-spacing:-.025em}h1{font-size:clamp(26px,7vw,38px);font-weight:850}h2{font-size:clamp(25px,6vw,35px);font-weight:850}.sub{font-size:16px;line-height:1.48;text-align:center;color:var(--muted);margin:13px auto 22px}.hero-img{display:block;width:100%;max-height:335px;object-fit:cover;margin:18px auto;border-radius:24px;overflow:hidden;-webkit-mask-image:-webkit-radial-gradient(white,black);box-shadow:0 8px 20px rgba(0,0,0,.12)}.cta{display:block;width:100%;border:0;border-radius:12px;background:var(--green);color:#fff;font-weight:800;font-size:17px;padding:17px 20px;cursor:pointer;box-shadow:0 8px 18px rgba(23,163,74,.22);transition:.18s}.cta:hover{background:var(--green2);transform:translateY(-1px)}.proof{text-align:center;color:#4b5563;font-size:14px;margin:14px 0 0}.options{display:grid;gap:12px;margin-top:22px}.option{width:100%;border:1px solid #e4e7ec;background:#fff;border-radius:16px;padding:17px 18px;text-align:left;color:#111827;font-weight:650;font-size:16px;line-height:1.35;cursor:pointer;box-shadow:0 3px 12px rgba(16,24,40,.055);transition:.17s;display:flex;align-items:center;gap:12px}.option:hover{border-color:#96d4ac;transform:translateY(-1px);box-shadow:0 6px 16px rgba(16,24,40,.09)}.option.selected{background:#effaf2;border-color:var(--green);box-shadow:0 0 0 2px rgba(23,163,74,.12)}.letter{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex:none;background:#f1f3f6;color:#111827;font-weight:850}.option.selected .letter{background:var(--green);color:white}.image-grid{grid-template-columns:1fr;gap:12px}.image-option{padding:0;display:flex;overflow:hidden;min-height:74px;align-items:stretch}.image-option img{display:block;width:72px;min-width:72px;height:72px;align-self:center;object-fit:cover}.image-option span{display:flex;align-items:center;padding:14px 16px;font-size:16px;text-align:left;line-height:1.3;flex:1}
+.loader-wrap{text-align:center}.loader{width:64px;height:64px;border-radius:50%;border:6px solid #dfe5e1;border-top-color:var(--green);margin:0 auto 24px;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.loading-title{font-size:24px;font-weight:800}.loading-sub{color:var(--muted);margin-top:10px}.alert{display:flex;gap:10px;align-items:flex-start;background:#ffe6e3;color:#ec1129;border:1px solid #ffc4bd;border-radius:12px;padding:13px 14px;font-weight:700;line-height:1.35;margin-bottom:22px}.journey{background:white;border:1px solid #e5e7eb;border-radius:18px;padding:22px;margin:22px 0;box-shadow:0 6px 20px rgba(16,24,40,.06)}.journey h3{text-align:center;margin:0 0 7px;font-size:22px}.scale{position:relative;height:14px;border-radius:999px;background:#e7e9ee;margin:45px 0 48px;overflow:visible}.scale-fill{position:absolute;inset:0;background:linear-gradient(90deg,#f05252,#f8b84e,#17a34a);border-radius:inherit}.pin{position:absolute;top:50%;transform:translate(-50%,-50%);width:25px;height:25px;border:4px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.25)}.pin.now{left:2%;background:#ef4444}.pin.future{left:98%;background:#17a34a}.pin-label{position:absolute;width:145px;text-align:center;font-size:13px;line-height:1.3;font-weight:700}.pin.now .pin-label{top:24px;left:-1px;transform:translateX(-8%)}.pin.future .pin-label{bottom:24px;right:-1px;transform:translateX(8%)}.big-number{text-align:center;color:var(--green);font-size:32px;font-weight:900;margin:8px 0 20px}.final-note{text-align:center;font-size:15px;line-height:1.45;margin:18px 3px 0}.commit-title{font-size:clamp(25px,6.5vw,34px);font-weight:850;text-align:center;line-height:1.18;margin:0}.commit-gift{font-size:clamp(25px,6.5vw,34px);font-weight:900;text-align:center;line-height:1.18;margin:0}.commit-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}.commit-actions .option{justify-content:center;text-align:center;padding:16px 10px}.step.compact{padding-top:8px;padding-bottom:8px}
+.emoji-options{display:grid;gap:8px;margin-top:22px}.emoji-option{padding:0;min-height:62px;border-radius:16px;overflow:hidden;display:flex;align-items:stretch;gap:0}.emoji-icon{width:60px;min-width:60px;display:grid;place-items:center;font-size:30px;background:transparent}.emoji-text{flex:1;display:flex;align-items:center;padding:13px 16px 13px 0;font-size:16px;line-height:1.28;font-weight:500;text-align:left}.emoji-option.selected .emoji-icon{background:#effaf2}.option.selected{background:#effaf2!important;color:#111827!important;border-color:var(--green)!important;box-shadow:0 0 0 2px rgba(23,163,74,.12)!important}.option.selected .letter{background:var(--green);color:#fff}.top{height:8px;background:rgba(23,163,74,.12);margin:0 0 24px}.bar{background:var(--green)}.top.hidden{visibility:hidden}
+@media(max-height:700px){.step.active{justify-content:flex-start;min-height:auto}}
+@media(max-width:390px){.stage{padding-left:14px;padding-right:14px}.option{padding:15px}.image-option{padding:0}.image-option img{width:64px;min-width:64px;height:64px}.image-option span{font-size:14px;padding:11px 13px}.alert{font-size:14px}}
+
+.result-chart{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:20px;margin:20px 0;box-shadow:0 6px 20px rgba(16,24,40,.06)}
+.result-chart h3{text-align:center;margin:0 0 6px;font-size:22px}
+.result-chart .sub{margin:0 0 14px}
+.chart-wrap{width:100%;aspect-ratio:16/9;min-height:210px}
+.chart-wrap svg{display:block;width:100%;height:100%;overflow:visible}
+.chart-label{font-size:12px;fill:#6b7280}
+.chart-grid{stroke:#b3b3b3;stroke-dasharray:3 3;stroke-width:1}
+.chart-line{fill:none;stroke:url(#growthGradient);stroke-width:4}
+.chart-area{fill:url(#growthGradient);opacity:.55}
+.chart-dot-start{fill:#dc2626;stroke:rgba(0,0,0,.12);stroke-width:14}
+.chart-dot-end{fill:#22c55e;stroke:rgba(0,0,0,.12);stroke-width:14}
+.result-caption{text-align:center;font-weight:800;color:var(--green);font-size:24px;margin-top:4px}
+
+
+.final-step{justify-content:flex-start!important;min-height:auto!important;padding-bottom:26px}
+.final-alert{display:flex;align-items:flex-start;gap:14px;background:#ffe6e3;border:1px solid #fecdc8;color:#f0182b;border-radius:17px;padding:17px 18px;font-size:17px;line-height:1.42;margin:4px 0 44px}
+.final-alert-icon{font-size:22px;line-height:1}
+.final-heading{text-align:center;font-size:25px;font-weight:900;line-height:1.15;margin:0 0 14px}
+.final-subtitle{text-align:center;color:#6b7280;font-size:17px;line-height:1.4;margin:0 6px 25px}
+.final-chart{width:100%;margin:0 0 22px}
+.final-chart svg{display:block;width:100%;height:auto;overflow:visible}
+.final-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 16px}
+.final-card{border:1px solid #d5d7dc;border-radius:14px;background:#fff;min-height:212px;padding:15px 12px 14px;display:flex;flex-direction:column;align-items:center;justify-content:space-between}
+.final-meter{width:42px;height:116px;border-radius:9px;background:#e9e9eb;position:relative;overflow:hidden;display:flex;align-items:flex-end}
+.final-meter-fill{width:100%;height:10%;background:#ed2525;border-radius:0 0 9px 9px}
+.final-meter.green .final-meter-fill{height:100%;background:#16a34a;border-radius:9px}
+.final-percent{position:absolute;left:0;right:0;top:7px;text-align:center;font-size:13px;font-weight:800;color:#6b7280;z-index:2}
+.final-meter.green .final-percent{color:#fff}
+.final-card-text{text-align:center;color:#6b7280;font-size:15px;line-height:1.3;margin-top:12px}
+.final-cta{width:100%;border:0;border-radius:16px;background:#17a34a;color:#fff;font-size:18px;font-weight:500;padding:18px 16px;margin:0 0 22px;cursor:pointer;box-shadow:0 9px 0 #0e9542;transition:transform .15s,box-shadow .15s}
+.final-cta:active{transform:translateY(5px);box-shadow:0 4px 0 #0e9542}
+.final-message{text-align:center;font-weight:900;font-size:19px;line-height:1.18;color:#030712;margin:14px 6px 27px;text-transform:uppercase}
+.final-highlight{background:#16a34a;color:#030712;padding:0 3px}
+@media(max-width:390px){
+  .final-alert{font-size:15px;margin-bottom:34px}
+  .final-heading{font-size:23px}
+  .final-subtitle{font-size:16px}
+  .final-card{min-height:200px;padding:14px 9px}
+  .final-card-text{font-size:14px}
+  .final-message{font-size:17px}
+}
+
+
+.text-highlight{
+  background:#17a34a;
+  color:#fff;
+  padding:0 .12em;
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+}
+.heading-strong{
+  font-weight:900;
+}
+
+
+.age-options .option{justify-content:flex-start}
+[data-id="welcome"] h2{font-size:clamp(25px,6.2vw,34px)}
+[data-id="welcome"] .sub{margin-top:34px}
+[data-id="goal"] h1,[data-id="time"] h1{font-size:clamp(27px,6.7vw,38px);line-height:1.12}
+
+
+/* Página Homem/Mulher no estilo da referência, sem círculo de seleção */
+[data-id="gender"]{justify-content:center}
+[data-id="gender"] h1{font-size:clamp(30px,7vw,40px);margin-bottom:26px}
+[data-id="gender"] .options{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:0;
+}
+[data-id="gender"] .gender-card{
+  min-height:150px;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:flex-start;
+  overflow:hidden;
+  border-radius:18px;
+  border:1px solid #dbdbdb;
+  background:#fff;
+  color:#030712;
+  box-shadow:none;
+  gap:0;
+}
+[data-id="gender"] .gender-card:hover{
+  transform:translateY(-1px);
+  border-color:#030712;
+  box-shadow:0 5px 16px rgba(16,24,40,.07);
+}
+[data-id="gender"] .gender-icon{
+  min-height:82px;
+  display:grid;
+  place-items:center;
+  font-size:40px;
+  line-height:1;
+  padding:12px 8px 8px;
+  background:transparent;
+}
+[data-id="gender"] .gender-label{
+  width:100%;
+  min-height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 8px 12px;
+  font-size:18px;
+  font-weight:650;
+  text-align:center;
+}
+[data-id="gender"] .gender-card.selected{
+  background:#effaf2!important;
+  color:#111827!important;
+  border-color:var(--green)!important;
+  box-shadow:0 0 0 2px rgba(23,163,74,.12)!important;
+}
+@media(max-width:390px){
+  [data-id="gender"] .options{gap:8px}
+  [data-id="gender"] .gender-card{min-height:168px}
+  [data-id="gender"] .gender-icon{min-height:96px;font-size:42px;padding:16px 8px 10px}
+  [data-id="gender"] .gender-label{min-height:62px;font-size:16px;padding:14px 8px 16px}
+}
+</style>
+</head>
+<body>
+<div class="app"><main class="stage" id="stage"><div aria-hidden="true" class="top hidden"><div class="bar" id="progress" style="width: 0%;"></div></div>
+<section class="step active" data-id="welcome">
+<h2 class="heading-strong">Access the Automated Dollar System That Lets You Earn From <span class="text-highlight">$450 a $1.000</span> Per Day Using This Hidden AI 🌍</h2>
+<p class="sub">No showing your face, no creating content, and no followers required.</p>
+<img alt="Automated Dollar System" class="hero-img" src="images/0.png"/>
+<button class="cta" data-next="">START NOW</button><p class="proof">⚡ More than 1,347 people have already unlocked their potential.</p></section>
+<section class="step question compact" data-id="commitment">
+<h1 class="commit-gift">🎁 CONGRATULATIONS! You'll receive a special gift at the end of this quiz!</h1>
+<p class="sub">Complete the next steps to unlock your <strong>SECRET GIFT</strong>.</p>
+<h2 class="commit-title">Are you committed to answering this quick quiz?</h2>
+<div class="commit-actions"><button class="option" data-value="Yes">✅ Yes</button><button class="option" data-value="No">🚫 No</button></div>
+</section>
+<section class="step question" data-id="gender">
+<h1>What is your gender?</h1>
+<div class="options">
+<button class="option gender-card" data-value="Male"><span class="gender-icon">👨</span><span class="gender-label">Male</span></button>
+<button class="option gender-card" data-value="Female"><span class="gender-icon">👸</span><span class="gender-label">Female</span></button>
+</div>
+</section>
+<section class="step question" data-id="age">
+<h1>How old are you?</h1>
+<div class="options age-options">
+<button class="option" data-value="18-25">18–25 years old</button>
+<button class="option" data-value="26-35">26–35 years old</button>
+<button class="option" data-value="36-45">36–45 years old</button>
+<button class="option" data-value="46+">46+ years old</button>
+</div>
+</section>
+<section class="step question" data-id="objective"><h1>What is your main goal?</h1><p class="sub">Choose the option that best describes your current financial goal.</p><div class="options"><button class="option" data-value="Renda extra">💰️ Earn an extra $800 per day</button><button class="option" data-value="Substituir salário">🔁 Replace my current salary</button><button class="option" data-value="Liberdade financeira">🕊️ Achieve financial freedom</button><button class="option" data-value="Trabalhar de casa">😎 Work from home on my own schedule</button><button class="option" data-value="Negócio online">💸 Start my online business</button></div></section>
+<section class="step question" data-id="situation"><h1>What best describes your current situation?</h1><div class="options image-grid"><button class="option image-option" data-value="CLT"><img alt="" src="images/1.png"/><span>I'm employed and want extra income</span></button><button class="option image-option" data-value="Desempregado"><img alt="" src="images/2.png"/><span>I'm unemployed and looking for an opportunity</span></button><button class="option image-option" data-value="Autônomo"><img alt="" src="images/3.png"/><span>I'm self-employed and want to increase my income</span></button><button class="option image-option" data-value="Aposentado"><img alt="" src="images/4.png"/><span>I'm retired and have free time</span></button><button class="option image-option" data-value="Liberdade digital"><img alt="" src="images/5.png"/><span>I'm looking for financial freedom through online business</span></button></div></section>
+<section class="step question" data-id="motivation"><h1>What motivates you to make money online right now?</h1><p class="sub">Be honest—this helps us personalize your strategy:</p><div class="options"><button class="option" data-value="Dívidas">Pay off my debts</button><button class="option" data-value="Independência">Become financially independent</button><button class="option" data-value="Sonho">Achieve a personal dream</button><button class="option" data-value="Família">Spend more time with my family</button><button class="option" data-value="Padrão de vida">Improve my lifestyle</button></div></section>
+<section class="step question" data-id="feeling"><h1>How do you feel about making money online <strong>TODAY?</strong></h1><div class="emoji-options">
+<button class="option emoji-option" data-value="Frustrado"><span class="emoji-icon">😤</span><span class="emoji-text">Frustrated — I've tried before and failed ✅ But I want a real opportunity</span></button>
+<button class="option emoji-option" data-value="Confuso"><span class="emoji-icon">🤔</span><span class="emoji-text">Confused — I don't know where to start 🧭 But I'm ready to learn</span></button>
+<button class="option emoji-option" data-value="Cético"><span class="emoji-icon">🤨</span><span class="emoji-text">Skeptical — It sounds too good to be true 🤨 But I want to see it work</span></button>
+<button class="option emoji-option" data-value="Animado"><span class="emoji-icon">🤯</span><span class="emoji-text">Excited but unsure 💸 I'm afraid of losing money</span></button>
+<button class="option emoji-option" data-value="Desesperado"><span class="emoji-icon">🚨</span><span class="emoji-text">Desperate — I need results now 🚨 I'll do whatever it takes</span></button>
+</div></section>
+<section class="step question" data-id="income"><h1>Are you satisfied with your current income?</h1><div class="emoji-options">
+<button class="option emoji-option" data-value="Preciso ganhar mais"><span class="emoji-icon">🙅‍♂️</span><span class="emoji-text">No — I need to earn more now ⚡ I'm changing that in 2026</span></button>
+<button class="option emoji-option" data-value="Medo de arriscar"><span class="emoji-icon">🤔</span><span class="emoji-text">No — I'm afraid to take risks 🛡️ But I'm willing to try a different approach</span></button>
+<button class="option emoji-option" data-value="Poderia melhorar"><span class="emoji-icon">💸</span><span class="emoji-text">It could be better 💰 I want extra income without the hassle</span></button>
+<button class="option emoji-option" data-value="Sem renda"><span class="emoji-icon">🚀</span><span class="emoji-text">I have no income today 🎯 I'm ready to make my first sale</span></button>
+</div></section>
+<section class="step question" data-id="obstacle"><h1>What's been holding you back from making money online?</h1><p class="sub">Choose your biggest obstacle</p><div class="options"><button class="option" data-value="Não sabia começar">🧩 I didn't know where to start</button><button class="option" data-value="Perdi dinheiro">💸 I lost money on ads</button><button class="option" data-value="Complicado">🧠 The methods were too complicated</button><button class="option" data-value="Medo de aparecer">🙈 I don't want to show my face</button><button class="option" data-value="Falta de recursos">⏰️ I don't have enough time or money to invest</button><button class="option" data-value="Não funcionou">😤 I tried before, but it didn't work</button></div></section>
+<section class="step question" data-id="dream"><h1>What dream would become possible if money was no longer a problem?</h1><p class="sub">Imagine earning $1,000 per day with the Automated Dollar System...</p><div class="options image-grid"><button class="option image-option" data-value="Viajar"><img alt="" src="images/6.png"/><span>Travel the world without financial worries</span></button><button class="option image-option" data-value="Casa ou carro"><img alt="" src="images/7.png"/><span>Buy my dream house or car</span></button><button class="option image-option" data-value="Família"><img alt="" src="images/8.png"/><span>Give my family a better life</span></button><button class="option image-option" data-value="Sair do CLT"><img alt="" src="images/9.png"/><span>Quit my job and enjoy true freedom</span></button><button class="option image-option" data-value="Segurança"><img alt="" src="images/10.png"/><span>Have complete financial security</span></button><button class="option image-option" data-value="Investir em mim"><img alt="" src="images/11.png"/><span>Invest in myself</span></button></div></section>
+<section class="step question" data-id="goal"><h1 class="heading-strong">How much do <span class="text-highlight">you want</span> to be EARNING per day within the next 30 days?</h1><p class="sub" style="font-style:italic">Be ambitious, but realistic about your commitment</p><div class="options"><button class="option" data-value="150-300">$150–$300 per day</button><button class="option" data-value="450-700">$450–$700 per day</button><button class="option" data-value="750-1000">$750–$1,000 per day</button><button class="option" data-value="1000-2000">$1,000–$2,000 per day</button><button class="option" data-value="3000+">More than $3,000 per day</button></div></section>
+<section class="step question" data-id="time"><h1 class="heading-strong">How much time can you dedicate each day to the <span class="text-highlight">Automated Dollar System?</span></h1><div class="options"><button class="option" data-value="10-30 min">10–30 minutes (quick start)</button><button class="option" data-value="1-2 horas">1–2 hours (ideal for results)</button><button class="option" data-value="2-3 horas">2–3 hours (ideal for maximizing earnings)</button><button class="option" data-value="4+ horas">More than 4 hours (full commitment)</button></div></section>
+<section class="step final-step" data-id="final">
+<div class="final-alert">
+<span class="final-alert-icon">⚠</span>
+<span>Your access to the Automated Dollar System has been unlocked for a limited time!</span>
+</div>
+<h2 class="final-heading">Your Next 30-Day Journey</h2>
+<p class="final-subtitle">Based on your answers, we've created the perfect strategy for YOU.</p>
+<div class="final-chart">
+<svg aria-label="Progress chart" role="img" viewbox="0 0 406 245">
+<defs>
+<lineargradient id="finalGradient" x1="0" x2="1" y1="1" y2="0">
+<stop offset="0%" stop-color="#dc2626"></stop>
+<stop offset="50%" stop-color="#fbbf24"></stop>
+<stop offset="100%" stop-color="#22c55e"></stop>
+</lineargradient>
+</defs>
+<g stroke="#b6b7bc" stroke-dasharray="3 3" stroke-width="1">
+<line x1="34" x2="390" y1="190" y2="190"></line>
+<line x1="34" x2="390" y1="144.5" y2="144.5"></line>
+<line x1="34" x2="390" y1="99" y2="99"></line>
+<line x1="34" x2="390" y1="53.5" y2="53.5"></line>
+<line x1="34" x2="390" y1="8" y2="8"></line>
+<line x1="34" x2="34" y1="8" y2="190"></line>
+<line x1="390" x2="390" y1="8" y2="190"></line>
+</g>
+<g fill="#667085" font-size="12">
+<text text-anchor="end" x="20" y="194">0</text>
+<text text-anchor="end" x="20" y="148.5">25</text>
+<text text-anchor="end" x="20" y="103">50</text>
+<text text-anchor="end" x="20" y="57.5">75</text>
+<text text-anchor="end" x="20" y="12">100</text>
+</g>
+<path d="M34 190 L390 8 L390 190 Z" fill="url(#finalGradient)" opacity=".58"></path>
+<path d="M34 190 L390 8" fill="none" stroke="url(#finalGradient)" stroke-width="4"></path>
+<circle cx="34" cy="190" fill="#000" opacity=".08" r="14"></circle>
+<circle cx="34" cy="190" fill="#dc2626" r="6"></circle>
+<circle cx="390" cy="8" fill="#000" opacity=".08" r="14"></circle>
+<circle cx="390" cy="8" fill="#22c55e" r="6"></circle>
+<text fill="#667085" font-size="12" text-anchor="start" x="34" y="222">$0 per day</text>
+<text fill="#667085" font-size="12" text-anchor="end" x="390" y="222">$800/day</text>
+</svg>
+</div>
+<div class="final-cards">
+<div class="final-card">
+<div class="final-meter">
+<div class="final-percent">10%</div>
+<div class="final-meter-fill"></div>
+</div>
+<div class="final-card-text">Where you are today: $0 per day</div>
+</div>
+<div class="final-card">
+<div class="final-meter green">
+<div class="final-percent">100%</div>
+<div class="final-meter-fill"></div>
+</div>
+<div class="final-card-text">Where you'll be in 30 days: $1,000 per day</div>
+</div>
+</div>
+<button class="final-cta checkout">UNLOCK ACCESS</button>
+<div class="final-message">
+    To unlock your access to the AUTOMATED DOLLAR SYSTEM, click the button below and
+    <span class="final-highlight">WATCH THE ACCESS TUTORIAL</span>
+</div>
+<button class="final-cta checkout">UNLOCK ACCESS</button>
+</section>
+</main></div>
+<script>
+(() => {
+  /* ==========================================================
+     CONFIGURAÇÃO
+     1. Coloque o link do checkout em CHECKOUT_URL.
+     2. Coloque em TRACKING_ENDPOINT a URL de um webhook do Make,
+        Zapier, n8n, Supabase Edge Function ou outro receptor JSON.
+     3. Enquanto TRACKING_ENDPOINT estiver vazio, os eventos ficam
+        salvos neste navegador para testes.
+     ========================================================== */
+  const CHECKOUT_URL = "/vsl";
+  const SUPABASE_URL = "https://vcmgzggyktlbgyjxicks.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_xXgcXLH1vi5RJpZBXJ3KfQ_tFxwWiR7";
+  const FUNNEL_ID = "automated-dollar-system-v1";
+  const DEBUG_TRACKING = true;
+
+  const steps = [...document.querySelectorAll('.step')];
+  const progress = document.getElementById('progress');
+  let index = 0;
+
+  const safeJsonParse = (value, fallback) => {
+    try { return JSON.parse(value) ?? fallback; }
+    catch (_) { return fallback; }
+  };
+
+  const answers = safeJsonParse(localStorage.getItem('funnel_answers'), {});
+  const params = new URLSearchParams(location.search);
+
+  function createId(prefix) {
+    if (window.crypto && crypto.randomUUID) return `${prefix}_${crypto.randomUUID()}`;
+    return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 12)}`;
+  }
+
+  let visitorId = localStorage.getItem('funnel_visitor_id');
+  if (!visitorId) {
+    visitorId = createId('visitor');
+    localStorage.setItem('funnel_visitor_id', visitorId);
+  }
+
+  let sessionId = sessionStorage.getItem('funnel_session_id');
+  if (!sessionId) {
+    sessionId = createId('session');
+    sessionStorage.setItem('funnel_session_id', sessionId);
+  }
+
+  const sessionStartedAt = Number(sessionStorage.getItem('funnel_session_started_at')) || Date.now();
+  sessionStorage.setItem('funnel_session_started_at', String(sessionStartedAt));
+
+  const attribution = {
+    utm_source: params.get('utm_source') || '',
+    utm_medium: params.get('utm_medium') || '',
+    utm_campaign: params.get('utm_campaign') || '',
+    utm_content: params.get('utm_content') || '',
+    utm_term: params.get('utm_term') || '',
+    fbclid: params.get('fbclid') || '',
+    gclid: params.get('gclid') || '',
+    ttclid: params.get('ttclid') || ''
+  };
+
+  function getCurrentStepId() {
+    return steps[index]?.dataset.id || 'unknown';
+  }
+
+  function saveLocalEvent(event) {
+    const events = safeJsonParse(localStorage.getItem('funnel_tracking_events'), []);
+    events.push(event);
+    localStorage.setItem('funnel_tracking_events', JSON.stringify(events.slice(-500)));
+  }
+
+  function sendEvent(eventName, details = {}) {
+    const payload = {
+      event_id: createId('event'),
+      event_name: eventName,
+      funnel_id: FUNNEL_ID,
+      visitor_id: visitorId,
+      session_id: sessionId,
+      timestamp: new Date().toISOString(),
+      session_seconds: Math.round((Date.now() - sessionStartedAt) / 1000),
+      page_url: location.href,
+      page_path: location.pathname,
+      referrer: document.referrer || '',
+      language: navigator.language || '',
+      screen_width: window.screen?.width || null,
+      screen_height: window.screen?.height || null,
+      viewport_width: window.innerWidth,
+      viewport_height: window.innerHeight,
+      device_type: window.innerWidth <= 767 ? 'mobile' : (window.innerWidth <= 1024 ? 'tablet' : 'desktop'),
+      current_step: getCurrentStepId(),
+      answers: { ...answers },
+      ...attribution,
+      ...details
+    };
+
+    saveLocalEvent(payload);
+
+    if (DEBUG_TRACKING) {
+      console.log('[QUIZ TRACKING]', payload);
+    }
+
+    const configured = SUPABASE_URL.startsWith('https://') &&
+      !SUPABASE_URL.includes('COLE_') &&
+      SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes('COLE_');
+
+    if (!configured) return;
+
+    fetch(`${SUPABASE_URL}/rest/v1/quiz_events`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        visitor_id: payload.visitor_id,
+        session_id: payload.session_id,
+        event_name: payload.event_name,
+        step_id: payload.step_id || null,
+        question: payload.question || null,
+        answer_value: payload.answer_value || null,
+        answer_label: payload.answer_label || null,
+        step_number: payload.step_number || null,
+        total_steps: payload.total_steps || null,
+        progress_percent: payload.progress_percent || null,
+        page_url: payload.page_url,
+        referrer: payload.referrer || null,
+        utm_source: payload.utm_source || null,
+        utm_medium: payload.utm_medium || null,
+        utm_campaign: payload.utm_campaign || null,
+        utm_content: payload.utm_content || null,
+        utm_term: payload.utm_term || null,
+        fbclid: payload.fbclid || null,
+        gclid: payload.gclid || null,
+        ttclid: payload.ttclid || null,
+        device_type: payload.device_type || null,
+        user_agent: payload.user_agent || null,
+        metadata: payload
+      }),
+      keepalive: true
+    }).catch(error => {
+      if (DEBUG_TRACKING) console.warn('[QUIZ DATABASE ERROR]', error);
+    });
+  }
+
+  function show(i, push = true) {
+    index = Math.max(0, Math.min(i, steps.length - 1));
+    steps.forEach((step, n) => step.classList.toggle('active', n === index));
+
+    const trackable = steps.filter(step => step.classList.contains('question'));
+    const currentTrack = trackable.indexOf(steps[index]);
+    const stepId = getCurrentStepId();
+    const isEdge = stepId === 'welcome' || stepId === 'final';
+
+    document.querySelector('.top').classList.toggle('hidden', isEdge);
+    const pct = currentTrack >= 0 ? ((currentTrack + 1) / trackable.length) * 100 : 0;
+    progress.style.width = `${pct}%`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (push) history.pushState({ step: index }, '', `#${stepId}`);
+
+    sendEvent('step_view', {
+      step_id: stepId,
+      step_number: index + 1,
+      total_steps: steps.length,
+      progress_percent: Math.round(pct)
+    });
+  }
+
+  document.querySelectorAll('[data-next]').forEach(button => {
+    button.addEventListener('click', () => {
+      sendEvent('start_now_click', {
+        step_id: 'welcome',
+        button_text: button.textContent.trim()
+      });
+      show(index + 1);
+    });
+  });
+
+  document.querySelectorAll('.question .option').forEach(button => {
+    button.addEventListener('click', () => {
+      const step = button.closest('.step');
+      const stepId = step.dataset.id;
+      const answerValue = button.dataset.value || button.textContent.trim();
+      const answerLabel = button.textContent.replace(/\s+/g, ' ').trim();
+
+      step.querySelectorAll('.option').forEach(option => option.classList.remove('selected'));
+      button.classList.add('selected');
+
+      answers[stepId] = answerValue;
+      localStorage.setItem('funnel_answers', JSON.stringify(answers));
+
+      sendEvent('answer_click', {
+        step_id: stepId,
+        question: step.querySelector('h1,h2')?.textContent.replace(/\s+/g, ' ').trim() || stepId,
+        answer_value: answerValue,
+        answer_label: answerLabel,
+        step_number: index + 1
+      });
+
+      setTimeout(() => {
+        button.classList.remove('selected');
+        show(index + 1);
+      }, 180);
+    });
+  });
+
+  document.querySelectorAll('.checkout').forEach((button, checkoutIndex) => {
+    button.addEventListener('click', () => {
+      sendEvent('checkout_click', {
+        step_id: 'final',
+        button_text: button.textContent.trim(),
+        button_position: checkoutIndex + 1,
+        checkout_url: CHECKOUT_URL
+      });
+
+      if (CHECKOUT_URL) location.href = CHECKOUT_URL;
+      else alert('Add your checkout link to the CHECKOUT_URL field inside the HTML file.');
+    });
+  });
+
+  window.addEventListener('popstate', event => {
+    if (typeof event.state?.step === 'number') show(event.state.step, false);
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      sendEvent('session_pause', { step_id: getCurrentStepId() });
+    }
+  });
+
+  /* Use no console do navegador:
+     quizTracking.getEvents()       -> mostra todos os eventos locais
+     quizTracking.downloadEvents()  -> baixa um JSON local de teste
+     quizTracking.clearEvents()     -> apaga os eventos locais
+  */
+  window.quizTracking = {
+    getEvents() {
+      return safeJsonParse(localStorage.getItem('funnel_tracking_events'), []);
+    },
+    clearEvents() {
+      localStorage.removeItem('funnel_tracking_events');
+      console.log('Eventos locais apagados.');
+    },
+    downloadEvents() {
+      const events = this.getEvents();
+      const blob = new Blob([JSON.stringify(events, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `quiz-events-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  history.replaceState({ step: 0 }, '', location.pathname + location.search);
+  sendEvent('funnel_visit', { entry_step: 'welcome' });
+  show(0, false);
+})();
+</script>
+</body></html>
